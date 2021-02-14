@@ -1,15 +1,15 @@
 <template>
-  <div class="home">
+  <div>
+    <h1>首页</h1>
   </div>
 </template>
 
 <script>
 import { onMounted } from 'vue'
-import { getHomeAllData } from '../network/home'
+import { getHomeAllData } from 'network/home'
 
 export default {
   name: 'Home',
-  components: {},
   setup() {
     onMounted(() => {
       console.log('首页挂载啦...');
