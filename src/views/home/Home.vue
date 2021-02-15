@@ -10,6 +10,9 @@
     </div>
     <!-- 推荐 -->
     <recommend :recommends="recommends"/>
+    <!-- 选项卡 -->
+    <tab-control :tabs="['畅销', '新书', '精选']" @tabClick="tabClick"/>
+    <div>{{ checkedTabIndex }}</div>
   </div>
 </template>
 
@@ -17,24 +20,33 @@
 import { onMounted, ref } from 'vue'
 import { getHomeAllData } from 'network/home'
 import NavBar from 'components/common/navbar/NavBar'
+import TabControl from 'components/content/tabControl/TabControl'
 import Recommend from './childComps/Recommend'
 
 export default {
   name: 'Home',
   components: {
     NavBar,
-    Recommend
+    Recommend,
+    TabControl
   },
   setup() {
     const recommends = ref([])
+    let checkedTabIndex = ref(0);
     onMounted(() => {
       getHomeAllData().then(res => {
         console.log(res)
         recommends.value = res.goods.data
       })
     })
+    const tabClick = (index) => {
+      console.log('父组件收到Tab变化: ', index);
+      checkedTabIndex.value = index
+    }
     return {
-      recommends
+      recommends,
+      tabClick,
+      checkedTabIndex
     }
   }
 }
