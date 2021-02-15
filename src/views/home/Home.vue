@@ -1,26 +1,51 @@
 <template>
   <div>
+    <!-- 导航栏 -->
     <nav-bar>
       <template v-slot:default>图书兄弟</template>
     </nav-bar>
+    <!-- 轮播图 -->
+    <div class="banner">
+      <img src="~assets/images/banner1.jpg" alt="">
+    </div>
+    <!-- 推荐 -->
+    <recommend :recommends="recommends"/>
   </div>
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { getHomeAllData } from 'network/home'
-import NavBar from 'components/common/navbar/NavBar.vue'
+import NavBar from 'components/common/navbar/NavBar'
+import Recommend from './childComps/Recommend'
 
 export default {
   name: 'Home',
   components: {
-    NavBar
+    NavBar,
+    Recommend
   },
   setup() {
+    const recommends = ref([])
     onMounted(() => {
-      console.log('首页挂载啦...');
-      getHomeAllData().then(res => console.log(res))
+      getHomeAllData().then(res => {
+        console.log(res)
+        recommends.value = res.goods.data
+      })
     })
+    return {
+      recommends
+    }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.banner {
+  img {
+    width: 100%;
+    height: auto;
+    margin-top: 45px;
+  }
+}
+</style>
