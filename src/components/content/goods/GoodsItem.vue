@@ -1,10 +1,10 @@
 <template>
   <div class="goods-item">
-    <img src="~assets/images/1.jpg" alt="">
+    <img :src="product.cover_url" alt="product.description">
     <div class="goods-info">
-      <p>标题</p>
-      <span class="price"><small>$</small>100</span>
-      <span class="collect"><i class="iconfont icon-collect"></i>3</span>
+      <p>{{product.title}}</p>
+      <span class="price"><small>￥</small>{{product.price}}</span>
+      <span class="collect"><i class="iconfont icon-collect"></i>{{product.collects_count}}</span>
     </div>
   </div>
 </template>
@@ -12,6 +12,12 @@
 <script>
 export default {
   name: 'GoodsItem',
+  props: {
+    product: Object,
+    default() {
+      return {}
+    }
+  },
   setup () {
     
 

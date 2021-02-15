@@ -13,13 +13,13 @@
     <!-- 选项卡 -->
     <tab-control :tabs="['畅销', '新书', '精选']" @tabClick="tabClick"/>
     <!-- 商品列表 -->
-    <goods-list/>
+    <goods-list :goods="showGoods"/>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
-import { getHomeAllData } from 'network/home'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { getHomeAllData, getHomeGoodsData } from 'network/home'
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import Recommend from './childComps/Recommend'
@@ -35,21 +35,41 @@ export default {
   },
   setup() {
     const recommends = ref([])
-    let checkedTabIndex = ref(0);
+    let currentTabType = ref('sales');
+    let goods = reactive({
+      sales: {page: 0, list: []},
+      recommend: {page: 0, list: []},
+      new: {page: 0, list: []}
+    })
     onMounted(() => {
       getHomeAllData().then(res => {
-        console.log(res)
         recommends.value = res.goods.data
       })
+      // 畅销
+      getHomeGoodsData('sales').then(res => {
+        goods.sales.list = res.goods.data;
+      })
+      // 新书
+      getHomeGoodsData('new').then(res => {
+        goods.new.list = res.goods.data;
+      })
+      // 精选
+      getHomeGoodsData('recommend').then(res => {
+        goods.recommend.list = res.goods.data;
+      })
+    })
+    let showGoods = computed(() => {
+      return goods[currentTabType.value].list
     })
     const tabClick = (index) => {
-      console.log('父组件收到Tab变化: ', index);
-      checkedTabIndex.value = index
+      const types = ['sales', 'new', 'recommend']
+      currentTabType.value = types[index]
     }
     return {
       recommends,
       tabClick,
-      checkedTabIndex
+      currentTabType,
+      showGoods
     }
   }
 }
