@@ -1,5 +1,13 @@
 <template>
-  <router-view/>
+  <!-- <router-view/> -->
+  <!-- 迁移文档：https://next.router.vuejs.org/guide/migration/index.html#router-view-keep-alive-and-transition -->
+  <router-view v-slot="{ Component }">
+    <transition>
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </transition>
+  </router-view>
   <div id="nav">
     <router-link class="tab-bar-item" to="/">
       <div class="icon"><i class="iconfont icon-shouye"></i></div>
