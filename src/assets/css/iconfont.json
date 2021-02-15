@@ -81,6 +81,13 @@
       "font_class": "gouwuche",
       "unicode": "e638",
       "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "15167600",
+      "name": "up",
+      "font_class": "up",
+      "unicode": "e653",
+      "unicode_decimal": 58963
     }
   ]
 }

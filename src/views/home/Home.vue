@@ -22,6 +22,8 @@
         <goods-list :goods="showGoods"/>
       </div>
     </div>
+    <!-- 回到顶部 -->
+    <back-top v-show="isTabFixed" @backtop="backtop"/>
   </div>
 </template>
 
@@ -33,6 +35,7 @@ import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import Recommend from './childComps/Recommend'
 import GoodsList from 'components/content/goods/GoodsList'
+import BackTop from 'components/common/backTop/BackTop'
 
 export default {
   name: 'Home',
@@ -40,7 +43,8 @@ export default {
     NavBar,
     Recommend,
     TabControl,
-    GoodsList
+    GoodsList,
+    BackTop
   },
   setup() {
     const recommends = ref([]) // 顶部Banner推荐
@@ -100,9 +104,11 @@ export default {
         bs && bs.refresh() // 重新计算高度
       })
     })
+    // 选项卡切换筛选不同选项的数据
     let showGoods = computed(() => {
       return goods[currentTabType.value].list
     })
+    // 选项卡切换
     const tabClick = (index) => {
       const types = ['sales', 'new', 'recommend']
       currentTabType.value = types[index]
@@ -110,13 +116,18 @@ export default {
         bs && bs.refresh() // 重新计算高度
       })
     }
+    // 回到顶部
+    const backtop = () => {
+      bs.scrollTo(0, 0, 300)
+    }
     return {
       recommends,
       tabClick,
       currentTabType,
       showGoods,
       isTabFixed,
-      bannerRef
+      bannerRef,
+      backtop
     }
   }
 }
