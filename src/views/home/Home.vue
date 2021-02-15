@@ -10,9 +10,7 @@
       <div class="content">
         <div ref="bannerRef">
           <!-- 轮播图 -->
-          <div class="banner">
-            <img src="~assets/images/banner1.jpg" alt="">
-          </div>
+          <home-swiper :banners="banners"/>
           <!-- 推荐 -->
           <recommend :recommends="recommends"/>
         </div>
@@ -36,6 +34,7 @@ import TabControl from 'components/content/tabControl/TabControl'
 import Recommend from './childComps/Recommend'
 import GoodsList from 'components/content/goods/GoodsList'
 import BackTop from 'components/common/backTop/BackTop'
+import HomeSwiper from './childComps/HomeSwiper'
 
 export default {
   name: 'Home',
@@ -44,10 +43,12 @@ export default {
     Recommend,
     TabControl,
     GoodsList,
-    BackTop
+    BackTop,
+    HomeSwiper
   },
   setup() {
     const recommends = ref([]) // 顶部Banner推荐
+    const banners = ref([]) // 轮播图
     let currentTabType = ref('sales');
     let goods = reactive({
       sales: {page: 1, list: []},
@@ -60,6 +61,7 @@ export default {
     onMounted(() => {
       getHomeAllData().then(res => {
         recommends.value = res.goods.data
+        banners.value = res.slides
       })
       // 畅销
       getHomeGoodsData('sales').then(res => {
@@ -127,7 +129,8 @@ export default {
       showGoods,
       isTabFixed,
       bannerRef,
-      backtop
+      backtop,
+      banners
     }
   }
 }
@@ -144,12 +147,6 @@ export default {
     left: 0;
     right: 0;
     overflow: hidden;
-    .banner {
-      img {
-        width: 100%;
-        height: auto;
-      }
-    }
   }
 }
 </style>
