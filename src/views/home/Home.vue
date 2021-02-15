@@ -12,7 +12,8 @@
     <recommend :recommends="recommends"/>
     <!-- 选项卡 -->
     <tab-control :tabs="['畅销', '新书', '精选']" @tabClick="tabClick"/>
-    <div>{{ checkedTabIndex }}</div>
+    <!-- 商品列表 -->
+    <goods-list/>
   </div>
 </template>
 
@@ -22,13 +23,15 @@ import { getHomeAllData } from 'network/home'
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import Recommend from './childComps/Recommend'
+import GoodsList from 'components/content/goods/GoodsList'
 
 export default {
   name: 'Home',
   components: {
     NavBar,
     Recommend,
-    TabControl
+    TabControl,
+    GoodsList
   },
   setup() {
     const recommends = ref([])

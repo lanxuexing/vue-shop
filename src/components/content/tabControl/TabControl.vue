@@ -47,6 +47,7 @@ export default {
   width: 100%;
   position: sticky; // 吸顶效果
   top: 45px;
+  z-index: 9;
   .tab-control-item {
     flex: 1;
     span {

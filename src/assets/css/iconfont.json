@@ -13,6 +13,13 @@
       "unicode_decimal": 59229
     },
     {
+      "icon_id": "752579",
+      "name": "collect",
+      "font_class": "collect",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
       "icon_id": "971575",
       "name": "向上",
       "font_class": "weibiaoti1",
