@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item">
-    <img :src="product.cover_url" alt="product.description">
+    <img v-lazy="product.cover_url" alt="product.description">
     <div class="goods-info">
       <p>{{product.title}}</p>
       <span class="price"><small>￥</small>{{product.price}}</span>
