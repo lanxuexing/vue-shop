@@ -6,32 +6,74 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "351757",
-      "name": "购物车",
-      "font_class": "gouwuche",
-      "unicode": "e611",
-      "unicode_decimal": 58897
+      "icon_id": "609744",
+      "name": "圆",
+      "font_class": "yuancircle46",
+      "unicode": "e75d",
+      "unicode_decimal": 59229
     },
     {
-      "icon_id": "1400868",
+      "icon_id": "971575",
+      "name": "向上",
+      "font_class": "weibiaoti1",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "1472519",
+      "name": "选中",
+      "font_class": "xuanzhong",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "2678652",
+      "name": "向右",
+      "font_class": "xiangyou",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "2678653",
+      "name": "向左",
+      "font_class": "xiangzuo",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "5912739",
+      "name": "分类",
+      "font_class": "fenlei",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "6049549",
       "name": "我的",
       "font_class": "wode",
       "unicode": "e61d",
       "unicode_decimal": 58909
     },
     {
-      "icon_id": "4954950",
-      "name": "分类",
-      "font_class": "fenlei",
-      "unicode": "e65e",
-      "unicode_decimal": 58974
+      "icon_id": "7310412",
+      "name": "向下",
+      "font_class": "xiangxia",
+      "unicode": "e74a",
+      "unicode_decimal": 59210
     },
     {
-      "icon_id": "11891821",
-      "name": "home",
-      "font_class": "home",
-      "unicode": "e674",
-      "unicode_decimal": 58996
+      "icon_id": "8348147",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e720",
+      "unicode_decimal": 59168
+    },
+    {
+      "icon_id": "15077428",
+      "name": "购物车",
+      "font_class": "gouwuche",
+      "unicode": "e638",
+      "unicode_decimal": 58936
     }
   ]
 }

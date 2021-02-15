@@ -2,7 +2,7 @@
   <router-view/>
   <div id="nav">
     <router-link class="tab-bar-item" to="/">
-      <div class="icon"><i class="iconfont icon-home"></i></div>
+      <div class="icon"><i class="iconfont icon-shouye"></i></div>
       <div>首页</div>
     </router-link>
     <router-link class="tab-bar-item" to="/category">
@@ -39,6 +39,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  box-shadow: var(--color-shadow);
   a {
     color: var(--color-text);
 

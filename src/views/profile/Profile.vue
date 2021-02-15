@@ -1,11 +1,18 @@
 <template>
   <div>
-    <h1>我的</h1>
+    <nav-bar>
+      <template v-slot:default>个人中心</template>
+    </nav-bar>
   </div>
 </template>
 
 <script>
+import NavBar from 'components/common/navbar/NavBar.vue'
+
 export default {
-  name: 'Profile'
+  name: 'Profile',
+  components: {
+    NavBar
+  }
 }
 </script>
