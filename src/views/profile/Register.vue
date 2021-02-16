@@ -42,8 +42,9 @@
           placeholder="电子邮箱"
           :rules="[{ required: true, message: '请填写电子邮箱' }]"
         />
+        <router-link to="/login"><span class="login_link">已有账号，立即登录</span></router-link>
         <div style="margin: 16px;">
-          <van-button round block type="success" native-type="submit">提交</van-button>
+          <van-button round block type="success" native-type="submit">注册</van-button>
         </div>
       </van-form>
     </div>
@@ -106,5 +107,11 @@ export default {
 <style lang="scss" scoped>
 .content {
   margin-top: 50px;
+  .login_link {
+    font-size: 14px;
+    margin-top: 20px;
+    color: var(--color-tint);
+    display: inline-block;
+  }
 }
 </style>
