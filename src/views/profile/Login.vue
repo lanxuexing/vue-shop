@@ -29,7 +29,16 @@
         />
         <router-link to="/register"><span class="link">没有账号，立即注册</span></router-link>
         <div style="margin: 16px;">
-          <van-button round block type="success" native-type="submit">登录</van-button>
+          <van-button
+            round
+            block
+            type="success"
+            native-type="submit"
+            loading-text="正在登录..."
+            :loading="isLogin"
+          >
+          登录
+          </van-button>
         </div>
       </van-form>
     </div>
@@ -37,7 +46,7 @@
 </template>
 
 <script>
-import { onUnmounted, reactive, toRefs } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant';
 import NavBar from 'components/common/navbar/NavBar'
@@ -50,8 +59,8 @@ export default {
   },
   setup () {
     let router = useRouter()
-    // 定时器
-    let timerId;
+    // 是否正在登录
+    let isLogin = ref(false)
     // 表单信息
     const userInfo = reactive({
       email: '',
@@ -59,25 +68,24 @@ export default {
     })
     // 提交
     const onSubmit = () => {
+      if (isLogin.value) return
+      isLogin.value = true
       login(userInfo).then(res => {
-        if (res.status === 200) {
+        if (res) {
+          // 存储token到本地
+          window.localStorage.setItem('token', res.access_token)
+          isLogin.value = false
           Toast.success('登录成功')
-          router.push({ path: '/' })
-          timerId = window.setTimeout(() => {
-            router.push({
-              path: '/'
-            })
-          }, 1000);
+          userInfo.email = ''
           userInfo.password = ''
+          router.push({ path: '/' })
         }
-      })
-      onUnmounted(() => {
-        timerId && clearTimeout(timerId)
       })
     }
     return {
       ...toRefs(userInfo), // 将响应式的对象变为普通对象，并执行对象解构，这样在模板中就可以直接使用属性了，不用：userInfo.xxx
-      onSubmit
+      onSubmit,
+      isLogin
     }
   }
 }

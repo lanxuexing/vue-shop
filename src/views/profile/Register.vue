@@ -44,7 +44,16 @@
         />
         <router-link to="/login"><span class="link">已有账号，立即登录</span></router-link>
         <div style="margin: 16px;">
-          <van-button round block type="success" native-type="submit">注册</van-button>
+          <van-button
+            round
+            block
+            type="success"
+            native-type="submit"
+            loading-text="正在注册..."
+            :loading="isRegister"
+          >
+            注册
+          </van-button>
         </div>
       </van-form>
     </div>
@@ -52,7 +61,7 @@
 </template>
 
 <script>
-import { onUnmounted, reactive, toRefs } from 'vue'
+import { onUnmounted, reactive, toRefs, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Notify, Toast } from 'vant';
 import NavBar from 'components/common/navbar/NavBar'
@@ -67,6 +76,8 @@ export default {
     let router = useRouter()
     // 定时器
     let timerId;
+    // 是否正在注册
+    let isRegister = ref(false)
     // 表单信息
     const userInfo = reactive({
       name: '',
@@ -80,14 +91,17 @@ export default {
         Notify('两次密码输入不一致！')
         return;
       }
+      isRegister.value = true
+      if (isRegister.value) return
       register(userInfo).then(res => {
         if (res.status === 201) {
           Toast.success('注册成功')
+          isRegister.value = false
           timerId = window.setTimeout(() => {
             router.push({
               path: '/login'
             })
-          }, 1000);
+          }, 300);
           userInfo.password = ''
           userInfo.password_confirmtion = ''
         }
@@ -98,7 +112,8 @@ export default {
     }
     return {
       ...toRefs(userInfo), // 将响应式的对象变为普通对象，并执行对象解构，这样在模板中就可以直接使用属性了，不用：userInfo.xxx
-      onSubmit
+      onSubmit,
+      isRegister
     }
   }
 }
