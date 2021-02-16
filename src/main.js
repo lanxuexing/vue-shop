@@ -7,7 +7,7 @@ import 'vant/lib/index.css';
 import {
   Swipe, SwipeItem, Lazyload, Badge, Sidebar, SidebarItem,
   Collapse, CollapseItem, Tab, Tabs, Card, Image as VanImage,
-  Tag, Button
+  Tag, Button, Empty
 } from 'vant';
 
 createApp(App)
@@ -25,6 +25,7 @@ createApp(App)
 .use(VanImage)
 .use(Tag)
 .use(Button)
+.use(Empty)
 .use(store)
 .use(router)
 .mount('#app')

@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:default>商品详情: {{id}}</template>
+      <template v-slot:default>商品详情</template>
     </nav-bar>
     <van-image
       class="thumb_img"
@@ -25,6 +25,18 @@
         <van-button type="danger">立即购买</van-button>
       </template>
     </van-card>
+    <van-tabs v-model:active="activeTab">
+      <van-tab title="概述">
+        <div class="overview_content" v-html="detail.details"></div>
+      </van-tab>
+      <van-tab title="热评">
+        <van-empty class="empty_content" v-show="!detail.comments || detail.comments?.length == 0" description="暂时没有评论噢" />
+      </van-tab>
+      <van-tab title="相关图书">
+        <!-- 商品列表 -->
+        <goods-list :goods="like_goods"/>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
@@ -32,12 +44,14 @@
 import { useRoute } from 'vue-router'
 import { onMounted, reactive, ref, toRefs } from 'vue'
 import NavBar from 'components/common/navbar/NavBar'
+import GoodsList from 'components/content/goods/GoodsList'
 import { getDetail } from 'network/detail'
 
 export default {
   name: 'Detail',
   components: {
-    NavBar
+    NavBar,
+    GoodsList
   },
   setup() {
     const route = useRoute()
@@ -49,6 +63,8 @@ export default {
       detail: {},
       like_goods: []
     })
+    // 选项卡
+    let activeTab = ref(0)
     // 组件挂载
     onMounted(() => {
       getDetail(id.value).then(res => {
@@ -58,8 +74,8 @@ export default {
       })
     })
     return {
-      id,
-      ...toRefs(book)
+      ...toRefs(book),
+      activeTab
     }
   }
 }
@@ -71,5 +87,20 @@ export default {
 }
 .goods_card {
   text-align: left;
+}
+.overview_content {
+  padding: 10px;
+  margin-bottom: 50px;
+  ::v-deep .book-detail-content {
+    text-align: justify;
+    text-indent: 2em;
+  }
+  ::v-deep img {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+.empty_content {
+  margin-bottom: 50px;
 }
 </style>
