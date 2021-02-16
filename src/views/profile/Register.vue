@@ -5,6 +5,7 @@
     </nav-bar>
     <div class="content">
       <van-image
+        lazy-load
         width="10rem"
         height="10rem"
         fit="contain"
