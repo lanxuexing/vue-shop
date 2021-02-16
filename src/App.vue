@@ -3,7 +3,7 @@
   <!-- 迁移文档：https://next.router.vuejs.org/guide/migration/index.html#router-view-keep-alive-and-transition -->
   <router-view v-slot="{ Component }">
     <transition>
-      <keep-alive>
+      <keep-alive exclude="Detail">
         <component :is="Component" />
       </keep-alive>
     </transition>
