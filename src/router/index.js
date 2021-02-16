@@ -4,6 +4,7 @@ const Category = () => import('../views/category/Category.vue')
 const Detail = () => import('../views/detail/Detail.vue')
 const Profile = () => import('../views/profile/Profile.vue')
 const Shopcart = () => import('../views/shopcart/Shopcart.vue')
+const Register = () => import('../views/profile/Register.vue')
 
 const routes = [
   {
@@ -52,6 +53,14 @@ const routes = [
     component: Profile,
     meta: {
       title: '个人中心'
+    }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+    meta: {
+      title: '注册'
     }
   }
 ]
