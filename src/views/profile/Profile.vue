@@ -13,6 +13,7 @@
 
 <script>
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { Toast } from 'vant'
 import NavBar from 'components/common/navbar/NavBar'
 import { logout } from 'network/user'
@@ -25,6 +26,7 @@ export default {
   },
   setup() {
     let router = useRouter()
+    let store = useStore()
     // 定时器
     let timerId
     // 退出登录
@@ -32,8 +34,10 @@ export default {
       logout().then(res => {
         if (res.status === 204) {
           Toast.success('退出成功')
-          // 清除token
+          // 清除本地存储的token
           window.localStorage.clear()
+          // 清除Vuex里存储的token
+          store.commit('setIsLogin', false)
           timerId = window.setTimeout(() => {
             router.push({ path: '/login' })
           }, 100)

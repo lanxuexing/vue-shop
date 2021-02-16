@@ -48,6 +48,7 @@
 <script>
 import { reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { Toast } from 'vant';
 import NavBar from 'components/common/navbar/NavBar'
 import { login } from 'network/user'
@@ -59,6 +60,7 @@ export default {
   },
   setup () {
     let router = useRouter()
+    let store = useStore()
     // 是否正在登录
     let isLogin = ref(false)
     // 表单信息
@@ -74,6 +76,8 @@ export default {
         if (res) {
           // 存储token到本地
           window.localStorage.setItem('token', res.access_token)
+          // 在Vuex里也存储一份token
+          store.commit('setIsLogin', true)
           isLogin.value = false
           Toast.success('登录成功')
           userInfo.email = ''

@@ -13,7 +13,6 @@ export function request(config) {
   instance.interceptors.request.use(config => {
     // 如果有些接口需要认证才能访问，则在这里统一处理
     const token = window.localStorage.getItem('token')
-    console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
