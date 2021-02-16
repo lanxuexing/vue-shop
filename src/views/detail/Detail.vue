@@ -7,9 +7,10 @@
 </template>
 
 <script>
-import NavBar from 'components/common/navbar/NavBar'
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import NavBar from 'components/common/navbar/NavBar'
+import { getDetail } from 'network/detail'
 
 export default {
   name: 'Detail',
@@ -18,11 +19,25 @@ export default {
   },
   setup() {
     const route = useRoute()
+    // 路由参数
     let id = ref(null)
-    console.log(route.query.id)
     id.value = route.query.id
+    // 详情
+    let book = reactive({
+      detail: {},
+      like_goods: []
+    })
+    // 组件挂载
+    onMounted(() => {
+      getDetail(id.value).then(res => {
+        console.log('商品详情: ', res);
+        book.detail = res.goods
+        book.like_goods = res.like_goods
+      })
+    })
     return {
-      id
+      id,
+      ...toRefs(book)
     }
   }
 }
