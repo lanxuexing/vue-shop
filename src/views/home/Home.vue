@@ -98,7 +98,6 @@ export default {
         console.log('contentHeight: '+ document.querySelector('.content').clientHeight)
         console.log('当前类型： '+ currentTabType.value + ',' + page)
       })
-      console.log('bannerRef', bannerRef.value)
     })
     // 实时监听
     watchEffect(() => {

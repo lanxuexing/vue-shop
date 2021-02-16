@@ -23,3 +23,13 @@ export function login(data) {
     data
   })
 }
+
+/**
+ * 退出
+ */
+export function logout() {
+  return request({
+    url: '/api/auth/logout',
+    method: 'post'
+  })
+}

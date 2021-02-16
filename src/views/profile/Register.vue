@@ -75,7 +75,7 @@ export default {
   setup () {
     let router = useRouter()
     // 定时器
-    let timerId;
+    let timerId
     // 是否正在注册
     let isRegister = ref(false)
     // 表单信息
@@ -106,6 +106,7 @@ export default {
           userInfo.password_confirmtion = ''
         }
       })
+      // 组件卸载
       onUnmounted(() => {
         timerId && clearTimeout(timerId)
       })
