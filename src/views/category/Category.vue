@@ -39,6 +39,7 @@
             :title="goods.title"
             :thumb="goods.cover_url"
             lazy-load
+            @click="cardClick(goods.id)"
           />
         </div>
       </div>
@@ -50,6 +51,7 @@
 
 <script>
 import { computed, onMounted, reactive, ref, watchEffect, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import BetterScroll from 'better-scroll'
 import NavBar from 'components/common/navbar/NavBar'
 import BackTop from 'components/common/backTop/BackTop'
@@ -62,6 +64,7 @@ export default {
     BackTop
   },
   setup() {
+    let router = useRouter()
     let activeKey = ref(0)
     let activeName = ref(1)
     let categories = ref([])
@@ -157,6 +160,13 @@ export default {
     const backtop = () => {
       bs.scrollTo(0, 0, 300)
     }
+    // 商店卡片
+    const cardClick = (id) => {
+      router.push({
+        path: '/detail',
+        query: { id }
+      })
+    }
     return {
       activeKey,
       activeName,
@@ -167,7 +177,8 @@ export default {
       showGoods,
       bs,
       isBackTop,
-      backtop
+      backtop,
+      cardClick
     }
   }
 }
