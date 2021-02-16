@@ -20,8 +20,10 @@ export function request(config) {
   }, err => {
     // 如果有错误，在这里需要统一处理
     // 状态码：https://www.showdoc.com.cn/1207745568269674?page_id=6090117842667636
-    console.log(err)
     // 如果有需要授权的才可以访问的接口，则统一跳转至登录页面
+    const errData = err.response.data
+    const key = Object.keys(errData.errors)[0]
+    key && this.$notify(errData.errors[key][0])
   });
 
   return instance(config);

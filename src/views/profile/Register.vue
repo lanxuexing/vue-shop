@@ -51,8 +51,11 @@
 </template>
 
 <script>
+import { onUnmounted, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { Notify, Toast } from 'vant';
 import NavBar from 'components/common/navbar/NavBar'
-import { reactive, toRefs } from 'vue'
+import { register } from 'network/user'
 
 export default {
   name: 'Register',
@@ -60,6 +63,9 @@ export default {
     NavBar
   },
   setup () {
+    let router = useRouter()
+    // 定时器
+    let timerId;
     // 表单信息
     const userInfo = reactive({
       name: '',
@@ -69,7 +75,25 @@ export default {
     })
     // 提交
     const onSubmit = () => {
-      console.log('提交', userInfo)
+      if (userInfo.password !== userInfo.password_confirmtion) {
+        Notify('两次密码输入不一致！')
+        return;
+      }
+      register(userInfo).then(res => {
+        if (res.status === 201) {
+          Toast.success('注册成功')
+          timerId = window.setTimeout(() => {
+            router.push({
+              path: '/login'
+            })
+          }, 1000);
+          userInfo.password = ''
+          userInfo.password_confirmtion = ''
+        }
+      })
+      onUnmounted(() => {
+        timerId && clearTimeout(timerId)
+      })
     }
     return {
       ...toRefs(userInfo), // 将响应式的对象变为普通对象，并执行对象解构，这样在模板中就可以直接使用属性了，不用：userInfo.xxx
