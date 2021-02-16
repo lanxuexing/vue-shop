@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:default>注册</template>
+      <template v-slot:default>登录</template>
     </nav-bar>
     <div class="content">
       <van-image
@@ -13,11 +13,11 @@
       />
       <van-form @submit="onSubmit">
         <van-field
-          v-model="name"
-          name="用户名"
-          label="用户名"
-          placeholder="用户名"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          v-model="email"
+          name="电子邮箱"
+          label="电子邮箱"
+          placeholder="电子邮箱"
+          :rules="[{ required: true, message: '请填写电子邮箱' }]"
         />
         <van-field
           v-model="password"
@@ -27,24 +27,9 @@
           placeholder="密码"
           :rules="[{ required: true, message: '请填写密码' }]"
         />
-        <van-field
-          v-model="password_confirmtion"
-          type="password"
-          name="确认密码"
-          label="确认密码"
-          placeholder="确认密码"
-          :rules="[{ required: true, message: '请再次确认密码' }]"
-        />
-        <van-field
-          v-model="email"
-          name="电子邮箱"
-          label="电子邮箱"
-          placeholder="电子邮箱"
-          :rules="[{ required: true, message: '请填写电子邮箱' }]"
-        />
-        <router-link to="/login"><span class="link">已有账号，立即登录</span></router-link>
+        <router-link to="/register"><span class="link">没有账号，立即注册</span></router-link>
         <div style="margin: 16px;">
-          <van-button round block type="success" native-type="submit">注册</van-button>
+          <van-button round block type="success" native-type="submit">登录</van-button>
         </div>
       </van-form>
     </div>
@@ -54,12 +39,12 @@
 <script>
 import { onUnmounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import { Notify, Toast } from 'vant';
+import { Toast } from 'vant';
 import NavBar from 'components/common/navbar/NavBar'
-import { register } from 'network/user'
+import { login } from 'network/user'
 
 export default {
-  name: 'Register',
+  name: 'Login',
   components: {
     NavBar
   },
@@ -69,27 +54,21 @@ export default {
     let timerId;
     // 表单信息
     const userInfo = reactive({
-      name: '',
-      password: '',
-      password_confirmtion: '',
-      email: ''
+      email: '',
+      password: ''
     })
     // 提交
     const onSubmit = () => {
-      if (userInfo.password !== userInfo.password_confirmtion) {
-        Notify('两次密码输入不一致！')
-        return;
-      }
-      register(userInfo).then(res => {
-        if (res.status === 201) {
-          Toast.success('注册成功')
+      login(userInfo).then(res => {
+        if (res.status === 200) {
+          Toast.success('登录成功')
+          router.push({ path: '/' })
           timerId = window.setTimeout(() => {
             router.push({
-              path: '/login'
+              path: '/'
             })
           }, 1000);
           userInfo.password = ''
-          userInfo.password_confirmtion = ''
         }
       })
       onUnmounted(() => {

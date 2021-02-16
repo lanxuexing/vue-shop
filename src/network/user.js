@@ -11,3 +11,15 @@ export function register(data) {
     data
   })
 }
+
+/**
+ * 登录
+ * @param {*} data 表单数据
+ */
+export function login(data) {
+  return request({
+    url: '/api/auth/login',
+    method: 'post',
+    data
+  })
+}
