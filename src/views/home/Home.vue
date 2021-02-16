@@ -87,9 +87,9 @@ export default {
         isTabFixed.value = currHeight > bannerRef.value.offsetHeight;
       })
       // 上拉加载（当底部下拉距离超过阈值）
-      bs.on('pullingUp', () => {
+      bs.on('pullingUp', async () => {
         const page = goods[currentTabType.value].page + 1
-        getHomeGoodsData(currentTabType.value, page).then(res => {
+        await getHomeGoodsData(currentTabType.value, page).then(res => {
           goods[currentTabType.value].list.push(...res.goods.data)
           goods[currentTabType.value].page += 1
         })
