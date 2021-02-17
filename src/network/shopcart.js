@@ -54,7 +54,7 @@ export function deleteCart(id) {
  * @link https://www.showdoc.com.cn/1207745568269674?page_id=6125001913503134
  * @param {*} data 数据 cart_ids 要操作的购物车id数组, {0:2, 1:3} => [2, 3]
  */
-export function deleteCart(data) {
+export function checkedCart(data) {
   return request({
     url: '/api/carts/checked',
     method: 'patch',

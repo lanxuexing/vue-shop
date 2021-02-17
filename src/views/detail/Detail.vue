@@ -21,8 +21,8 @@
         <van-tag plain type="danger" v-show="detail.is_recommend == 1">热门</van-tag>
       </template>
       <template #footer>
-        <van-button type="warning">加入购物车</van-button>
-        <van-button type="danger">立即购买</van-button>
+        <van-button type="warning" @click="onAddCart">加入购物车</van-button>
+        <van-button type="danger" @click="onByCart">立即购买</van-button>
       </template>
     </van-card>
     <van-tabs v-model:active="activeTab">
@@ -41,11 +41,13 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, reactive, ref, toRefs } from 'vue'
 import NavBar from 'components/common/navbar/NavBar'
 import GoodsList from 'components/content/goods/GoodsList'
 import { getDetail } from 'network/detail'
+import { addCart } from 'network/shopcart'
+import { Toast } from 'vant'
 
 export default {
   name: 'Detail',
@@ -55,6 +57,7 @@ export default {
   },
   setup() {
     const route = useRoute()
+    const router = useRouter()
     // 路由参数
     let id = ref(null)
     id.value = route.query.id
@@ -73,9 +76,28 @@ export default {
         book.like_goods = res.like_goods
       })
     })
+    // 加入购物车
+    const onAddCart = () => {
+      addCart({goods_id: book.detail.id, num: 1 }).then(res => {
+        if (res.status === 201 || res.status === 204) {
+          Toast.success('添加成功')
+        }
+      })
+    }
+    // 立即购买
+    const onByCart = () => {
+      addCart({goods_id: book.detail.id, num: 1 }).then(res => {
+        if (res.status === 201 || res.status === 204) {
+          Toast.success('添加成功，去购物车结账')
+          router.push({path: '/shopcart'})
+        }
+      })
+    }
     return {
       ...toRefs(book),
-      activeTab
+      activeTab,
+      onAddCart,
+      onByCart
     }
   }
 }
