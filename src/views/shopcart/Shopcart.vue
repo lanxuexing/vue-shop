@@ -5,10 +5,10 @@
     </nav-bar>
     <div class="cart-content">
       <div class="cart-body">
-        <van-checkbox-group ref="checkboxGroup">
+        <van-checkbox-group v-model="checkboxResult" @change="checkboxGroupChange" ref="checkboxGroup">
           <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
             <div class="good-item">
-              <van-checkbox name=""/>
+              <van-checkbox :name="item.id"/>
               <div class="good-img"><img src="~assets/logo.png" alt=""></div>
               <div class="good-desc">
                 <div class="good-title">
@@ -35,7 +35,7 @@
         </van-checkbox-group>
       </div>
       <van-submit-bar :price="3050" button-text="结算" class="submit-all">
-        <van-checkbox>全选</van-checkbox>
+        <van-checkbox v-model:checked="checkAll" @click="allCheckboxChange">全选</van-checkbox>
       </van-submit-bar>
       <div class="empty" v-if="!list.length">
         <img class="empty-cart" src="~assets/logo.png" alt="">
@@ -51,7 +51,7 @@ import { onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
 import NavBar from 'components/common/navbar/NavBar'
-import { getCart, updateCart } from 'network/shopcart'
+import { getCart, updateCart, checkedCart } from 'network/shopcart'
 
 export default {
   name: 'Shopcart',
@@ -63,13 +63,16 @@ export default {
     let checkboxGroup = ref(null)
     // 购物车数据模型
     const state = reactive({
-      list: []
+      list: [],
+      checkboxResult: [], // 每个商品复选框组合
+      checkAll: true // 全选
     })
     // 初始化
     const init = () => {
       Toast.loading({message: '加载中...', forbidClick: true})
       getCart('goods').then(res => {
         state.list = res.data
+        state.checkboxResult = res.data.filter(x => x.is_checked).map(y => y.id)
         Toast.clear()
       })
     }
@@ -90,6 +93,31 @@ export default {
         Toast.clear()
       })
     }
+    // 复选框切换
+    const checkboxGroupChange = (result) => {
+      Toast.loading({message: '修改中...', forbidClick: true})
+      state.checkboxResult = result // 同步双向绑定
+      if (result.length === state.list.length) {
+        state.checkAll = true
+      } else {
+        state.checkAll = false
+      }
+      // 同步数据库
+      checkedCart({cart_ids: result}).then(() => {
+        Toast.clear()
+      })
+    }
+    // 全选
+    const allCheckboxChange = () => {
+      state.checkAll = !state.checkAll
+      if (!state.checkAll) {
+        state.checkAll = true
+        state.checkboxResult = state.list.map(c => c.id)
+      } else {
+        state.checkAll = false
+        state.checkboxResult = []
+      }
+    }
     // 前往购物
     const goToBy = () => {
       router.push({ path: '/' })
@@ -98,7 +126,9 @@ export default {
       checkboxGroup,
       ...toRefs(state),
       goToBy,
-      onChangeNum
+      onChangeNum,
+      checkboxGroupChange,
+      allCheckboxChange
     }
   }
 }
