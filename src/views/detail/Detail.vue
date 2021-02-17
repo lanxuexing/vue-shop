@@ -43,6 +43,7 @@
 <script>
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted, reactive, ref, toRefs } from 'vue'
+import { useStore } from 'vuex'
 import NavBar from 'components/common/navbar/NavBar'
 import GoodsList from 'components/content/goods/GoodsList'
 import { getDetail } from 'network/detail'
@@ -58,6 +59,7 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const store = useStore()
     // 路由参数
     let id = ref(null)
     id.value = route.query.id
@@ -81,6 +83,7 @@ export default {
       addCart({goods_id: book.detail.id, num: 1 }).then(res => {
         if (res.status === 201 || res.status === 204) {
           Toast.success('添加成功')
+          store.dispatch('updateCart') // 分发更新购物车数量的Actions
         }
       })
     }
@@ -89,6 +92,7 @@ export default {
       addCart({goods_id: book.detail.id, num: 1 }).then(res => {
         if (res.status === 201 || res.status === 204) {
           Toast.success('添加成功，去购物车结账')
+          store.dispatch('updateCart') // 分发更新购物车数量的Actions
           router.push({path: '/shopcart'})
         }
       })
