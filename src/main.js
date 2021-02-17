@@ -7,7 +7,8 @@ import 'vant/lib/index.css';
 import {
   Swipe, SwipeItem, Lazyload, Badge, Sidebar, SidebarItem,
   Collapse, CollapseItem, Tab, Tabs, Card, Image as VanImage,
-  Tag, Button, Empty, Form, Field, Notify, Toast
+  Tag, Button, Empty, Form, Field, Notify, Toast, Checkbox,
+  CheckboxGroup, SwipeCell, Stepper, SubmitBar
 } from 'vant';
 
 createApp(App)
@@ -30,6 +31,11 @@ createApp(App)
 .use(Field)
 .use(Notify)
 .use(Toast)
+.use(Checkbox)
+.use(CheckboxGroup)
+.use(SwipeCell)
+.use(Stepper)
+.use(SubmitBar)
 .use(store)
 .use(router)
 .mount('#app')
