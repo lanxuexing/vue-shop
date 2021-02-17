@@ -1,23 +1,30 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:default>购物车</template>
+      <template v-slot:default>购物车({{$store.state.cartCount}})</template>
     </nav-bar>
     <div class="cart-content">
       <div class="cart-body">
         <van-checkbox-group ref="checkboxGroup">
-          <van-swipe-cell :right-width="50">
+          <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
             <div class="good-item">
               <van-checkbox name=""/>
               <div class="good-img"><img src="~assets/logo.png" alt=""></div>
               <div class="good-desc">
                 <div class="good-title">
-                  <span>细说PHP</span>
-                  <span>x100</span>
+                  <span>{{item.goods.title}}</span>
+                  <span>x{{item.goods.stock}}</span>
                 </div>
                 <div class="good-btn">
-                  <div class="price"><small>¥</small>999.00</div>
-                  <van-stepper integer :model-value="5" :min="1" :max="10" async-change />
+                  <div class="price"><small>¥</small>{{item.goods.price + '.00'}}</div>
+                  <van-stepper
+                    integer
+                    async-change
+                    :name="item.id"
+                    :model-value="item.num"
+                    :min="1"
+                    :max="item.goods.stock"
+                    @change="onChangeNum"/>
                 </div>
               </div>
             </div>
@@ -30,13 +37,21 @@
       <van-submit-bar :price="3050" button-text="结算" class="submit-all">
         <van-checkbox>全选</van-checkbox>
       </van-submit-bar>
+      <div class="empty" v-if="!list.length">
+        <img class="empty-cart" src="~assets/logo.png" alt="">
+        <div class="title">购物车空空如也</div>
+        <van-button round color="#1BAEAE" type="primary" @click="goToBy">前往选购</van-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 import NavBar from 'components/common/navbar/NavBar'
+import { getCart, updateCart } from 'network/shopcart'
 
 export default {
   name: 'Shopcart',
@@ -44,9 +59,46 @@ export default {
     NavBar
   },
   setup() {
+    const router = useRouter()
     let checkboxGroup = ref(null)
+    // 购物车数据模型
+    const state = reactive({
+      list: []
+    })
+    // 初始化
+    const init = () => {
+      Toast.loading({message: '加载中...', forbidClick: true})
+      getCart('goods').then(res => {
+        state.list = res.data
+        Toast.clear()
+      })
+    }
+    // 组件挂载
+    onMounted(() => {
+      init()
+    })
+    // 异步改变商品数量
+    const onChangeNum = (value, detail) => {
+      Toast.loading({message: '修改中...', forbidClick: true})
+      updateCart(detail.name, {num: value}).then(() => {
+        // 客户端同步数据改变
+        state.list.forEach(item => {
+          if (item.id === detail.name) {
+            item.value = value
+          }
+        })
+        Toast.clear()
+      })
+    }
+    // 前往购物
+    const goToBy = () => {
+      router.push({ path: '/' })
+    }
     return {
-      checkboxGroup
+      checkboxGroup,
+      ...toRefs(state),
+      goToBy,
+      onChangeNum
     }
   }
 }
@@ -113,7 +165,7 @@ export default {
     }
   }
   .submit-all {
-    margin-bottom: 50px;
+    margin-bottom: 60px;
     .van-checkbox {
       margin-left: 0;
     }
