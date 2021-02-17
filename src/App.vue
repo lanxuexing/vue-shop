@@ -32,6 +32,22 @@
   </div>
 </template>
 
+<script>
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
+
+export default {
+  name: 'App',
+  setup() {
+    const store = useStore()
+    // 组件挂载
+    onMounted(() => {
+      store.dispatch('updateCart') // 派发更新购物车数量的Actions
+    })
+  }
+}
+</script>
+
 <style lang="scss">
 @import 'assets/css/base.css'; // 导入全局样式文件
 @import 'assets/css/iconfont.css'; // 导入底部Tab图标
