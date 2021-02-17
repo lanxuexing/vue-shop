@@ -15,7 +15,7 @@ const routes = [
     name: 'DefaultHome',
     component: Home,
     meta: {
-      title: '图书兄弟'
+      title: '商城首页'
     }
   },
   {
@@ -23,7 +23,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: '图书兄弟'
+      title: '商城首页'
     }
   },
   {

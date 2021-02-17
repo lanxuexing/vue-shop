@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 导航栏 -->
     <nav-bar>
-      <template v-slot:default>图书兄弟</template>
+      <template v-slot:default>商城首页</template>
     </nav-bar>
     <!-- 选项卡(滚动的时候动态) -->
     <tab-control v-show="isTabFixed" :tabs="['畅销', '新书', '精选']" @tabClick="tabClick"/>
