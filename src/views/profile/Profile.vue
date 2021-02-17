@@ -8,29 +8,29 @@
         <div class="info">
           <img src="~assets/logo.png" alt="">
           <div class="user-desc">
-            <span>昵称：买买买</span>
-            <span>登录名：bybyby</span>
+            <span>昵称：{{user.name}}</span>
+            <span>登录名：{{user.email}}</span>
             <span class="name">个性签名：我的你的爱不问归期</span>
           </div>
         </div>
         <div class="user-list">
-          <li class="van-hairline--bottom">
+          <li class="van-hairline--bottom" @click="goToPage('/collect')">
             <span>我的收藏</span>
             <van-icon name="arrow"/>
           </li>
-          <li class="van-hairline--bottom">
+          <li class="van-hairline--bottom" @click="goToPage('/order')" >
             <span>我的订单</span>
             <van-icon name="arrow"/>
           </li>
-          <li class="van-hairline--bottom">
+          <li class="van-hairline--bottom" @click="goToPage('/account')">
             <span>账号管理</span>
             <van-icon name="arrow"/>
           </li>
-          <li class="van-hairline--bottom">
+          <li class="van-hairline--bottom" @click="goToPage('/address')">
             <span>地址管理</span>
             <van-icon name="arrow"/>
           </li>
-          <li class="van-hairline--bottom">
+          <li class="van-hairline--bottom" @click="goToPage('/about')">
             <span>关于我们</span>
             <van-icon name="arrow"/>
           </li>
@@ -44,12 +44,12 @@
 </template>
 
 <script>
+import { onUnmounted, onMounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { Toast } from 'vant'
 import NavBar from 'components/common/navbar/NavBar'
-import { logout } from 'network/user'
-import { onUnmounted } from 'vue'
+import { logout, getUserInfo } from 'network/user'
 
 export default {
   name: 'Profile',
@@ -61,6 +61,20 @@ export default {
     let store = useStore()
     // 定时器
     let timerId
+    // 用户信息
+    const state = reactive({
+      user: {}
+    })
+    // 组件挂载
+    onMounted(() => {
+      getUserInfo().then(res => {
+        state.user = res
+      })
+    })
+    // ListItem跳转
+    const goToPage = (path, query) => {
+      router.push({path, query: query || {}})
+    }
     // 退出登录
     const onLogout = () => {
       logout().then(res => {
@@ -81,7 +95,9 @@ export default {
       timerId && clearTimeout(timerId)
     })
     return {
-      onLogout
+      onLogout,
+      ...toRefs(state),
+      goToPage
     }
   }
 }
