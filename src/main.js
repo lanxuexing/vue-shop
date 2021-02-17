@@ -8,7 +8,7 @@ import {
   Swipe, SwipeItem, Lazyload, Badge, Sidebar, SidebarItem,
   Collapse, CollapseItem, Tab, Tabs, Card, Image as VanImage,
   Tag, Button, Empty, Form, Field, Notify, Toast, Checkbox,
-  CheckboxGroup, SwipeCell, Stepper, SubmitBar
+  CheckboxGroup, SwipeCell, Stepper, SubmitBar, Icon
 } from 'vant';
 
 createApp(App)
@@ -36,6 +36,7 @@ createApp(App)
 .use(SwipeCell)
 .use(Stepper)
 .use(SubmitBar)
+.use(Icon)
 .use(store)
 .use(router)
 .mount('#app')
