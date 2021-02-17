@@ -39,7 +39,7 @@
           </van-swipe-cell>
         </van-checkbox-group>
       </div>
-      <van-submit-bar :price="3050" button-text="结算" class="submit-all">
+      <van-submit-bar :price="totalProce" button-text="结算" class="submit-all" @submit="onSubmit">
         <van-checkbox v-model:checked="checkAll" @click="allCheckboxChange">全选</van-checkbox>
       </van-submit-bar>
       <div class="empty" v-if="!list.length">
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref, toRefs } from 'vue'
+import { computed, onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { Toast } from 'vant'
@@ -86,6 +86,14 @@ export default {
     // 组件挂载
     onMounted(() => {
       init()
+    })
+    // 实时计算总价
+    const totalProce = computed(() => {
+      let sum = 0
+      state.list.filter(x => state.checkboxResult.includes(x.id)).forEach(y => {
+        sum += parseInt(y.num) * parseFloat(y.goods.price) * 100 // 价格（单位分）
+      })
+      return sum
     })
     // 异步改变商品数量
     const onChangeNum = (value, detail) => {
@@ -133,6 +141,15 @@ export default {
         init()
       })
     }
+    // 结算[生成订单]
+    const onSubmit = () => {
+      const hasBy = state.checkboxResult.length
+      if (!hasBy) {
+        Toast.fail('您没有购买的商品可结算')
+        return
+      }
+      router.push({ path: '/createorder' })
+    }
     // 前往购物
     const goToBy = () => {
       router.push({ path: '/' })
@@ -144,7 +161,9 @@ export default {
       onChangeNum,
       checkboxGroupChange,
       allCheckboxChange,
-      onDeleteCart
+      onDeleteCart,
+      totalProce,
+      onSubmit
     }
   }
 }
