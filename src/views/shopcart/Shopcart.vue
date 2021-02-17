@@ -29,7 +29,12 @@
               </div>
             </div>
             <template #right>
-              <van-button square icon="delete" type="danger" class="delete-button" />
+              <van-button
+                square
+                icon="delete"
+                type="danger"
+                class="delete-button"
+                @click="onDeleteCart(item.id)"/>
             </template>
           </van-swipe-cell>
         </van-checkbox-group>
@@ -49,9 +54,10 @@
 <script>
 import { onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { Toast } from 'vant'
 import NavBar from 'components/common/navbar/NavBar'
-import { getCart, updateCart, checkedCart } from 'network/shopcart'
+import { getCart, updateCart, checkedCart, deleteCart } from 'network/shopcart'
 
 export default {
   name: 'Shopcart',
@@ -60,6 +66,7 @@ export default {
   },
   setup() {
     const router = useRouter()
+    const store = useStore()
     let checkboxGroup = ref(null)
     // 购物车数据模型
     const state = reactive({
@@ -118,6 +125,14 @@ export default {
         state.checkboxResult = []
       }
     }
+    // 侧滑删除
+    const onDeleteCart = (id) => {
+      deleteCart(id).then(() => {
+        Toast.success('删除成功')
+        store.dispatch('updateCart') // Vuex派发更新购物车的Actions
+        init()
+      })
+    }
     // 前往购物
     const goToBy = () => {
       router.push({ path: '/' })
@@ -128,7 +143,8 @@ export default {
       goToBy,
       onChangeNum,
       checkboxGroupChange,
-      allCheckboxChange
+      allCheckboxChange,
+      onDeleteCart
     }
   }
 }
