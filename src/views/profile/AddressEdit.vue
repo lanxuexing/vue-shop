@@ -21,6 +21,7 @@
 import { onMounted, reactive, toRefs } from 'vue'
 // import { useRoute, useRouter } from 'vue-router'
 import NavBar from 'components/common/navbar/NavBar'
+// import { addAddress, editAddress, deleteAddress, getAddressDetail } from 'network/address'
 
 export default {
   name: 'AddressEdit',
@@ -33,7 +34,9 @@ export default {
     // 组件状态
     const state = reactive({
       areaList: {
-
+        provice_list: {},
+        city_list: {},
+        county_list: {}
       },
       searchResult: [],
       addressInfo: {}
