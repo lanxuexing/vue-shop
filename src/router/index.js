@@ -8,6 +8,8 @@ const Profile = () => import('../views/profile/Profile.vue')
 const Shopcart = () => import('../views/shopcart/Shopcart.vue')
 const Register = () => import('../views/profile/Register.vue')
 const Login = () => import('../views/profile/Login.vue')
+const Address = () => import('../views/profile/Address.vue')
+const AddressEdit = () => import('../views/profile/AddressEdit.vue')
 
 const routes = [
   {
@@ -74,6 +76,24 @@ const routes = [
     component: Login,
     meta: {
       title: '登录'
+    }
+  },
+  {
+    path: '/address',
+    name: 'Address',
+    component: Address,
+    meta: {
+      title: '地址管理',
+      isAuthRequired: true
+    }
+  },
+  {
+    path: '/addressedit',
+    name: 'AddressEdit',
+    component: AddressEdit,
+    meta: {
+      title: '地址编辑',
+      isAuthRequired: true
     }
   }
 ]
